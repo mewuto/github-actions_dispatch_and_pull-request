@@ -16,9 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check input from workflow_dispatch
-        if: ${{ github.event_name == 'workflow_dispatch' }}
         run: echo "Running Terraform for paths: ${{ github.event.inputs.paths }}"
 
       - name: Check pull_request event
-        if: ${{ github.event_name == 'pull_request' }}
-        run: echo "This is a pull request to the main branch."
+        run: echo "Branch: ${{ github.ref }}"
