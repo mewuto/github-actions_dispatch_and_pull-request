@@ -21,4 +21,4 @@ jobs:
 
       - name: Check pull_request event
         run: |
-          echo "Branch: ${{ github.ref }}"
+          echo "Branch: ${{ github.ref }} from Test"
