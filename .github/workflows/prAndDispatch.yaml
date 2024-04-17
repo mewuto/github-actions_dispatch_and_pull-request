@@ -16,7 +16,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check input from workflow_dispatch
-        run: echo "Running Terraform for paths: ${{ inputs.paths }}"
+        run: | 
+          echo "Running Terraform for paths: ${{ inputs.paths }}"
 
       - name: Check pull_request event
-        run: echo "Branch: ${{ github.ref }}"
+        run: |
+          echo "Branch: ${{ github.ref }}"
