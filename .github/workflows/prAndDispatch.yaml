@@ -21,4 +21,9 @@ jobs:
 
       - name: Check pull_request event
         run: |
-          echo "Branch: ${{ github.ref }}"
+          echo "Branch: ${{ github.ref }} from Test"
+          if [ -n "${{github.event.pull_request.number}}" ]; then
+            echo "Pull Request Number: ${{github.event.pull_request.number}}"
+          else 
+            echo "Not a pull request"
+          fi
