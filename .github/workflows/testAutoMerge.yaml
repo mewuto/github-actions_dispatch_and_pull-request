@@ -1,0 +1,38 @@
+name: Test Auto-Merge
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create_pr_and_auto_merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Create New Branch
+        run: |
+          git checkout -b test-branch
+
+      - name: Create Test File
+        run: |
+          echo "This is a test file" > test.txt
+          git add test.txt
+          git commit -m "Add test file"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: "Add test file"
+          title: "Test PR for Auto-Merge"
+          branch: test-branch
+          base: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set Auto-Merge
+        if: true # 簡易テスト用に常に実行
+        run: |
+          PR_NUMBER=$(gh pr list --state open --base main --head test-branch --json number --jq '.[0].number')
+          gh pr merge $PR_NUMBER --auto --admin
