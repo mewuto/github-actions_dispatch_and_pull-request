@@ -1,4 +1,4 @@
-name: Create PR with Unique Branch Name
+name: Create Pull Request with Unique Branch
 
 on:
   push:
@@ -14,8 +14,8 @@ jobs:
 
       - name: Set Git User Info
         run: |
-          git config user.email "yuto.matsuda04@gmail.com"
-          git config user.name "Yuto Matsuda (GitHub Actions)"
+          git config user.email "your.email@example.com"
+          git config user.name "Your Name"
 
       - name: Generate Unique Branch Name
         id: generate_branch_name
@@ -24,15 +24,14 @@ jobs:
           echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
 
       - name: Create New Branch
-        run: |
-          git checkout -b ${{ env.BRANCH_NAME }}
+        run: git checkout -b ${{ env.BRANCH_NAME }}
 
-      - name: Add Changes
+      - name: Add Changes and Commit
         run: |
           CURRENT_DATE=$(date +"%Y-%m-%d %H:%M:%S")
-          echo "Current date and time: $CURRENT_DATE" > test.txt
-          git add test.txt
-          git commit -m "Add test file with unique branch name"
+          echo "Current date and time: $CURRENT_DATE" > date_info.txt
+          git add date_info.txt
+          git commit -m "Add date information"
 
       - name: Push to Remote
         run: git push origin ${{ env.BRANCH_NAME }}
@@ -43,20 +42,7 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "Add test file with unique branch name"
+          commit-message: "Add date information"
           branch: ${{ env.BRANCH_NAME }}
           base: main
-          title: "PR: Test Unique Branch Name"
-      
-      - name: Debug Git Status
-        run: git status
-
-      - name: Debug Git Log
-        run: git log --oneline -5
-
-      # - name: Enable Auto-Merge
-      #   run: |
-      #     PR_NUMBER=$(gh pr list --base main --head ${{ env.BRANCH_NAME }} --json number --jq '.[0].number')
-      #     gh pr merge $PR_NUMBER --auto
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          title: "PR: Add Date Information"
