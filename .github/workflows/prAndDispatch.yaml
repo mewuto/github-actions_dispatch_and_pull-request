@@ -1,29 +1,29 @@
-name: Sample Workflow
+# name: Sample Workflow
 
-on:
-  workflow_dispatch:
-    inputs:
-      paths:
-        description: 'Comma-separated list of paths to run Terraform (e.g. "path/to/dir1, path/to/dir2"). Leave empty to include all services directories.'
-        required: false
-        default: ''
-  pull_request:
-    branches:
-      - 'main'
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       paths:
+#         description: 'Comma-separated list of paths to run Terraform (e.g. "path/to/dir1, path/to/dir2"). Leave empty to include all services directories.'
+#         required: false
+#         default: ''
+#   pull_request:
+#     branches:
+#       - 'main'
 
-jobs:
-  run:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check input from workflow_dispatch
-        run: | 
-          echo "Running Terraform for paths: ${{ inputs.paths }}"
+# jobs:
+#   run:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Check input from workflow_dispatch
+#         run: | 
+#           echo "Running Terraform for paths: ${{ inputs.paths }}"
 
-      - name: Check pull_request event
-        run: |
-          echo "Branch: ${{ github.ref }} from Test"
-          if [ -n "${{github.event.pull_request.number}}" ]; then
-            echo "Pull Request Number: ${{github.event.pull_request.number}}"
-          else 
-            echo "Not a pull request"
-          fi
+#       - name: Check pull_request event
+#         run: |
+#           echo "Branch: ${{ github.ref }} from Test"
+#           if [ -n "${{github.event.pull_request.number}}" ]; then
+#             echo "Pull Request Number: ${{github.event.pull_request.number}}"
+#           else 
+#             echo "Not a pull request"
+#           fi
