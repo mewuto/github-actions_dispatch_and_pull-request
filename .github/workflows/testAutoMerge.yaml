@@ -22,7 +22,7 @@ jobs:
           echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
 
       - name: Create New Branch
-        run: git checkout -b ${{ env.BRANCH_NAME }}
+        run: git checkout -b test-branch-1
 
       - name: Add Changes and Commit
         run: |
@@ -32,7 +32,7 @@ jobs:
           git commit -m "Add date information"
 
       - name: Push to Remote
-        run: git push origin ${{ env.BRANCH_NAME }}
+        run: git push origin test-branch-1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -41,7 +41,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "Add date information"
-          branch: ${{ env.BRANCH_NAME }}
+          branch: test-branch-1
           base: main
           title: "PR: Add Date Information"
 
