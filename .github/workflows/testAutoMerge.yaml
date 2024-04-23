@@ -1,9 +1,8 @@
 name: Create Pull Request with Unique Branch
 
 on:
-  push:
-    branches:
-      - main
+  schedule:
+    - cron: '* * * * *'  # 毎分実行
 
 jobs:
   create_pr_with_unique_branch:
