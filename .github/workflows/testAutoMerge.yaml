@@ -1,8 +1,7 @@
 name: Create Pull Request with Unique Branch
 
 on:
-  schedule:
-    - cron: '* * * * *'  # 毎分実行
+  workflow_dispatch:
 
 jobs:
   create_pr_with_unique_branch:
