@@ -1,4 +1,4 @@
-name: Test Auto-Merge
+name: Create and Merge Pull Request
 
 on:
   push:
@@ -6,38 +6,40 @@ on:
       - main
 
 jobs:
-  create_pr_and_auto_merge:
+  create_and_merge:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
       - name: Set Git User Info
         run: |
-          git config user.email "terraform@example.com"
-          git config user.name "terraform"
+          git config user.email "your.email@example.com"
+          git config user.name "Your Name"
 
       - name: Create New Branch
         run: |
-          git checkout -b test-branch
+          git checkout -b new-feature-branch
 
-      - name: Create Test File
+      - name: Add Changes
         run: |
-          echo "This is a test file" > test.txt
-          git add test.txt
-          git commit -m "Add test file"
+          echo "New changes" > new_file.txt
+          git add new_file.txt
+          git commit -m "Add new file"
+
+      - name: Push to Remote
+        run: git push origin new-feature-branch
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
-          commit-message: "Add test file"
-          title: "Test PR for Auto-Merge"
-          branch: test-branch
-          base: main
           token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Add new file"
+          branch: new-feature-branch
+          base: main
+          title: "Feature: Add new file"
 
-      - name: Set Auto-Merge
-        if: true # 簡易テスト用に常に実行
+      - name: Merge Pull Request
         run: |
-          PR_NUMBER=$(gh pr list --state open --base main --head test-branch --json number --jq '.[0].number')
-          gh pr merge $PR_NUMBER --auto --admin
+          PR_NUMBER=$(gh pr list --base main --head new-feature-branch --json number --jq '.[0].number')
+          gh pr merge $PR_NUMBER --admin
