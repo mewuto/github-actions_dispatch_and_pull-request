@@ -50,6 +50,6 @@ jobs:
       - name: Enable Auto-Merge
         run: |
           PR_NUMBER=$(gh pr list --base main --head ${{ env.BRANCH_NAME }} --json number --jq '.[0].number')
-          gh pr merge $PR_NUMBER --admin --auto
+          gh pr merge $PR_NUMBER --auto
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
