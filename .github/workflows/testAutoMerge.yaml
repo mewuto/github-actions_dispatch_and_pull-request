@@ -1,4 +1,4 @@
-name: Create and Merge Pull Request
+name: Test PR Creation
 
 on:
   push:
@@ -6,31 +6,29 @@ on:
       - main
 
 jobs:
-  create_and_merge:
+  create_pr_test:
     runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
       - name: Set Git User Info
         run: |
-          git config user.email "your.email@example.com"
+          git config user.email "you@example.com"
           git config user.name "Your Name"
 
       - name: Create New Branch
         run: |
-          git checkout -b new-feature-branch
+          git checkout -b test-branch
 
       - name: Add Changes
         run: |
-          echo "New content" > new_file.txt
-          git add new_file.txt
-          git commit -m "Add new file"
+          echo "Test PR Creation" > test_pr.txt
+          git add test_pr.txt
+          git commit -m "Test PR Creation"
 
       - name: Push to Remote
-        run: git push origin new-feature-branch
+        run: git push origin test-branch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -38,14 +36,7 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "Add new file"
-          branch: new-feature-branch
+          commit-message: "Test PR Creation"
+          branch: test-branch
           base: main
-          title: "Feature: Add new file"
-
-      - name: Merge Pull Request
-        run: |
-          PR_NUMBER=$(gh pr list --base main --head new-feature-branch --json number --jq '.[0].number')
-          gh pr merge $PR_NUMBER --admin
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          title: "Test PR: Test PR Creation"
