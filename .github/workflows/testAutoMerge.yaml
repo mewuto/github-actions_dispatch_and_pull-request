@@ -1,4 +1,4 @@
-name: Test PR Creation
+name: Create PR with Unique Branch Name
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  create_pr_test:
+  create_pr_with_unique_branch:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -17,18 +17,24 @@ jobs:
           git config user.email "you@example.com"
           git config user.name "Your Name"
 
+      - name: Generate Unique Branch Name
+        id: generate_branch_name
+        run: |
+          BRANCH_NAME="feature-$(date +%Y%m%d%H%M%S)"
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+
       - name: Create New Branch
         run: |
-          git checkout -b test-branch
+          git checkout -b ${{ env.BRANCH_NAME }}
 
       - name: Add Changes
         run: |
-          echo "Test PR Creation" > test_pr.txt
-          git add test_pr.txt
-          git commit -m "Test PR Creation"
+          echo "Unique branch name test" > test.txt
+          git add test.txt
+          git commit -m "Add test file with unique branch name"
 
       - name: Push to Remote
-        run: git push origin test-branch
+        run: git push origin ${{ env.BRANCH_NAME }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -36,7 +42,14 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "Test PR Creation"
-          branch: test-branch
+          commit-message: "Add test file with unique branch name"
+          branch: ${{ env.BRANCH_NAME }}
           base: main
-          title: "Test PR: Test PR Creation"
+          title: "PR: Test Unique Branch Name"
+
+      - name: Enable Auto-Merge
+        run: |
+          PR_NUMBER=$(gh pr list --base main --head ${{ env.BRANCH_NAME }} --json number --jq '.[0].number')
+          gh pr merge $PR_NUMBER --admin --auto
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
