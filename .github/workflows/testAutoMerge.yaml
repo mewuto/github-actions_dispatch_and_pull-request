@@ -46,10 +46,16 @@ jobs:
           branch: ${{ env.BRANCH_NAME }}
           base: main
           title: "PR: Test Unique Branch Name"
+      
+      - name: Debug Git Status
+        run: git status
 
-      - name: Enable Auto-Merge
-        run: |
-          PR_NUMBER=$(gh pr list --base main --head ${{ env.BRANCH_NAME }} --json number --jq '.[0].number')
-          gh pr merge $PR_NUMBER --auto
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Debug Git Log
+        run: git log --oneline -5
+
+      # - name: Enable Auto-Merge
+      #   run: |
+      #     PR_NUMBER=$(gh pr list --base main --head ${{ env.BRANCH_NAME }} --json number --jq '.[0].number')
+      #     gh pr merge $PR_NUMBER --auto
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
