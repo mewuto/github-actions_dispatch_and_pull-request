@@ -21,29 +21,19 @@ jobs:
           BRANCH_NAME="feature-$(date +%Y%m%d%H%M%S)"
           echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
 
-      - name: Create New Branch
-        run: git checkout -b test-branch-1
-
       - name: Add Changes and Commit
         run: |
           CURRENT_DATE=$(date +"%Y-%m-%d %H:%M:%S")
           echo "Current date and time: $CURRENT_DATE" > date_info.txt
-          git add date_info.txt
-          git commit -m "Add date information"
-
-      - name: Push to Remote
-        run: git push origin test-branch-1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "Add date information"
-          branch: test-branch-1
+          branch: ${{env.BRANCH_NAME}}
           base: main
-          title: "PR: Add Date Information"
+          title: ${{env.BRANCH_NAME}}
 
       # - name: Set Auto-Merge
       #   if: env.ALREADY_EXIST != 1 && env.AUTO_MERGE == 'true'
