@@ -28,13 +28,13 @@ jobs:
 
       - name: Check for Annotations
         run: |
-          ANNOTATIONS=$(gh run view --json annotations --jq '.annotations | length')
+          ANNOTATIONS=$(gh run view --log)
           echo "Annotations count: $ANNOTATIONS"
-          if [[ "$ANNOTATIONS" -gt 0 ]]; then
-            echo "There are annotations in the workflow. AUTO_MERGE=false." >> $GITHUB_ENV
-          else
-            echo "No annotations found. AUTO_MERGE=true." >> $GITHUB_ENV
-          fi
+          # if [[ "$ANNOTATIONS" -gt 0 ]]; then
+          #   echo "There are annotations in the workflow. AUTO_MERGE=false." >> $GITHUB_ENV
+          # else
+          #   echo "No annotations found. AUTO_MERGE=true." >> $GITHUB_ENV
+          # fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
