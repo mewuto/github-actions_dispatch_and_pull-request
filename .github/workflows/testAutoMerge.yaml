@@ -28,7 +28,9 @@ jobs:
 
       - name: Check for Annotations
         run: |
-          ANNOTATIONS=$(gh run view --log)
+          RUN_ID=$(gh run list --workflow="$GITHUB_WORKFLOW" --status in_progress --limit 1 --json databaseId --jq '.[0].databaseId')
+          echo "Current Workflow Run ID: $RUN_ID"
+          ANNOTATIONS=$(gh run view "$RUN_ID" --log)
           echo "Annotations count: $ANNOTATIONS"
           # if [[ "$ANNOTATIONS" -gt 0 ]]; then
           #   echo "There are annotations in the workflow. AUTO_MERGE=false." >> $GITHUB_ENV
