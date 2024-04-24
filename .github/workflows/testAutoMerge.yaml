@@ -26,6 +26,19 @@ jobs:
           CURRENT_DATE=$(date +"%Y-%m-%d %H:%M:%S")
           echo "Current date and time: $CURRENT_DATE" > date_info.txt
 
+      - name: Check for Annotations
+        run: |
+          ANNOTATIONS=$(gh run view --json annotations --jq '.annotations | length')
+          echo "Annotations count: $ANNOTATIONS"
+          if [[ "$ANNOTATIONS" -gt 0 ]]; then
+            echo "There are annotations in the workflow. AUTO_MERGE=false." >> $GITHUB_ENV
+          else
+            echo "No annotations found. AUTO_MERGE=true." >> $GITHUB_ENV
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
