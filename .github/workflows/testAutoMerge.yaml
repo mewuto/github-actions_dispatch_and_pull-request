@@ -38,7 +38,7 @@ jobs:
       - name: Set Auto-Merge
         run: |
           PR_NUMBER=$(gh pr list --state open --base main --head ${{ env.BRANCH_NAME }} --json number --jq '.[0].number')
-          gh pr merge $PR_NUMBER --auto
+          gh pr merge $PR_NUMBER --merge --auto
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
