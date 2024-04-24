@@ -36,7 +36,6 @@ jobs:
           title: ${{env.BRANCH_NAME}}
 
       - name: Set Auto-Merge
-        if: env.ALREADY_EXIST != 1 && env.AUTO_MERGE == 'true'
         run: |
           PR_NUMBER=$(gh pr list --state open --base main --head ${{ env.BRANCH_NAME }} --json number --jq '.[0].number')
           gh pr merge $PR_NUMBER --auto
